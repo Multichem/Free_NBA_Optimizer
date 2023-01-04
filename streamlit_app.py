@@ -258,13 +258,15 @@ with tab2:
                             del lineup_final[lineup_final.columns[0]]
                             del lineup_final[lineup_final.columns[1]]
                             lineup_final = lineup_final.reset_index(drop=True)
+                            lineup_test = lineup_final
                             lineup_final = lineup_final.T
                             lineup_final['Cost'] = total_cost
                             lineup_final['Proj'] = total_proj
                             lineup_final['Own'] = total_own
                             
                             with display_container:
-                                st.write(lineup_final)
+                                st.write(lineup_test)
+                                time.sleep(3)
                             
                             lineups.append(lineup_final)
 
