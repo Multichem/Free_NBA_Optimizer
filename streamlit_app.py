@@ -270,8 +270,7 @@ with tab2:
                             
                             lineup_display.append(lineup_test)
                             
-                            with display_container:
-                                lineup_test
+                            lineup_test
                             
                             lineups.append(lineup_final)
 
