@@ -69,7 +69,7 @@ with tab2:
                         while x <= totalRuns:
 
                             raw_proj_file = proj_data
-                            raw_proj_file = raw_proj_file.columns = ['Player', 'Team', 'Position', 'Salary', 'Median', 'Own']
+                            raw_proj_file.columns = ['Player', 'Team', 'Position', 'Salary', 'Median', 'Own']
                             raw_flex_file = raw_proj_file.dropna(how='all')
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > 0]
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > proj_cut]
