@@ -271,8 +271,7 @@ with tab2:
                             lineup_display.append(lineup_test)
                             
                             with display_container:
-                                for lineup_var in range(0,len(lineup_display)):
-                                    st.table(lineup_display)
+                                lineup_test
                             
                             lineups.append(lineup_final)
 
