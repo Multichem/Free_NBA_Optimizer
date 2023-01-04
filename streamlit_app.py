@@ -15,7 +15,7 @@ st.set_page_config(layout="wide")
 
 tab1, tab2 = st.tabs(["Projections", "Optimizer"])
 
-lineup_display = []
+lineup_display = {}
 check_list = []
 rand_player = 0
 boost_player = 0
