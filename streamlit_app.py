@@ -94,7 +94,7 @@ with tab2:
                                     player_trim_list = []
 
                             raw_proj_file = proj_data
-                            flex_file.rename(columns={"name": "Player", "salary": "Salary", "fpts": "Median", "proj_own": "Own"}, inplace = True)
+                            raw_proj_file.rename(columns={"name": "Player", "salary": "Salary", "fpts": "Median", "proj_own": "Own"}, inplace = True)
                             raw_flex_file = raw_proj_file.dropna(how='all')
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > 0]
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > proj_cut]
