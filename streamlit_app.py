@@ -24,8 +24,8 @@ with tab1:
     hold_container = st.empty()
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
-      bytes_data = uploaded_file.getvalue()
-      st.write(bytes_data)
+      proj_data = pd.read_json(Projection_URL)
+      st.write(proj_data)
 
 with tab2:   
     col1, col2 = st.columns([1, 4])
@@ -43,7 +43,6 @@ with tab2:
         ceiling_var = st.number_input('Relative ceiling above:', min_value = 0.0, max_value = 10.0, value = 6.5, step = .1)
         slack_var = st.number_input('Median  Variance in Sims', min_value = 0, max_value = 5, value = 0, step = 1)
         totalRuns_raw = st.number_input('How many Sims', min_value = 1, max_value = 1000, value = 5, step = 1)
-        avoid_teams = st.multiselect('Select teams to exclude', options = optimizer_data['Team'].unique())
 
     trim_true = 0
     own_trim_var = 50
