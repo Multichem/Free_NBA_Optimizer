@@ -23,6 +23,7 @@ salaryCut = 0
 
 with tab1:
     hold_container = st.empty()
+    st.info('This is a free to use NBA optimizer while I play around with this app platform. Eventually it will have export functionality, but for now it is used to create lineups without an export. In order to use it, upload a csv with that the columns oriented in this order: Player, Team, Position, Salary, Projection, Ownership. The columns names don't matter, but the orientation does!')
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
       proj_data = pd.read_csv(uploaded_file)
@@ -31,7 +32,6 @@ with tab1:
 with tab2:   
     col1, col2 = st.columns([1, 4])
     
-    st.info('Note that this optimization process aims to create a large set of usable lineups, and not necessarily an exact amount.')
     with col1:
       
         max_sal = st.number_input('Max Salary', min_value = 35000, max_value = 50000, value = 50000, step = 100)
