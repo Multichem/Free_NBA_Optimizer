@@ -272,7 +272,7 @@ with tab2:
                             
                             with display_container:
                                 for lineup in lineup_display:
-                                    st.write(lineup_display[lineup])
+                                    st.table(lineup_display[lineup])
                             
                             lineups.append(lineup_final)
 
