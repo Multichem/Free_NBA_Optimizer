@@ -36,27 +36,16 @@ with tab2:
     st.info('Note that this optimization process aims to create a large set of usable lineups, and not necessarily an exact amount.')
     with col1:
       
-        func_choice_select = st.selectbox('Choose optimization', ('Cash', 'Small Field', 'Medium Field', 'Large Field'))
         max_sal = st.number_input('Max Salary', min_value = 35000, max_value = 50000, value = 50000, step = 100)
         min_sal = st.number_input('Min Salary', min_value = 35000, max_value = 49900, value = 49000, step = 100)
         proj_cut = st.number_input('Lowest median allowed', min_value = 0, max_value = 25, value = 10, step = 1)
-        ceiling_var = st.number_input('Relative ceiling above:', min_value = 0.0, max_value = 10.0, value = 6.5, step = .1)
-        slack_var = st.number_input('Median  Variance in Sims', min_value = 0, max_value = 5, value = 0, step = 1)
-        totalRuns_raw = st.number_input('How many Sims', min_value = 1, max_value = 1000, value = 5, step = 1)
+        totalRuns_raw = st.number_input('How many Lineups', min_value = 1, max_value = 1000, value = 5, step = 1)
 
     trim_true = 0
     own_trim_var = 50
     trim_var = 5
     trim_dudes = trim_var
-    if func_choice_select == 'Cash':
-        func_var = 0
-    elif func_choice_select == 'Small Field':
-        func_var = 1
-    elif func_choice_select == 'Medium Field':
-        func_var = 2
-    elif func_choice_select == 'Large Field':
-        func_var = 2
-    totalRuns = totalRuns_raw * 5 * (func_var + 1)
+    totalRuns = totalRuns_raw
     cut_group_1 = []
     cut_group_2 = []
     force_group_1 = []
@@ -104,13 +93,14 @@ with tab2:
                                 elif trim_var == 0:
                                     player_trim_list = []
 
-                            raw_proj_file = optimizer_data
+                            raw_proj_file = proj_data
+                            flex_file.rename(columns={"name": "Player", "salary": "Salary", "fpts": "Median", "proj_own": "Own"}, inplace = True)
                             raw_flex_file = raw_proj_file.dropna(how='all')
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > 0]
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > proj_cut]
                             flex_file = raw_flex_file
-                            flex_file = flex_file[['Player', 'Team', 'Position', 'Salary', 'Median', 'Own', 'LevX', 'ValX']]
-                            flex_file.rename(columns={"Position": "Pos", "Own": "Proj DK Own%"}, inplace = True)
+                            flex_file = flex_file[['Player', 'team', 'pos', 'Salary', 'Median', 'Own']]
+                            flex_file.rename(columns={"team": "Team", "pos": "Pos", "Own": "Proj DK Own%"}, inplace = True)
                             flex_file['name_var'] = flex_file['Player']
                             flex_file['lock'] = flex_file['Player'].isin(lock_player)*1
                             if x > 1:
@@ -123,14 +113,10 @@ with tab2:
                             chalk_group_df = chalk_file.sample(n=10)
                             chalk_group = chalk_group_df['Player'].tolist()
                             flex_file['chalk_group'] = flex_file['Player'].isin(chalk_group)*1
-                            lev_file = flex_file.sort_values(by='LevX', ascending=False)
-                            lev_group_df = lev_file.sample(n=10)
-                            lev_group = lev_group_df['Player'].tolist()
-                            flex_file['lev_group'] = flex_file['Player'].isin(lev_group)*1
                             if x > 1:
-                                flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group', 'lev_group', 'trim']]
+                                flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group', 'trim']]
                             elif x == 0:
-                                flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group', 'lev_group']]
+                                flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group']]
                             if x > 1:
                                 if slack_var > 0:
                                     flex_file['randNumCol'] = np.random.randint(-int(slack_var),int(slack_var), flex_file.shape[0])
@@ -146,13 +132,7 @@ with tab2:
                             if len(avoid_teams) > 0:
                                 flex_file = flex_file.loc[~flex_file['Team'].isin(avoid_teams)]
                             player_ids = flex_file.index
-
-                            flex_file['DK Ceiling'] = flex_file['Player'].map(DK_dict)
-                            flex_file['DK Max'] = flex_file['Player'].map(DK_max_dict)
-                            flex_file['Ceiling Value'] = np.where(flex_file['Salary'] <=6000, flex_file['DK Ceiling'] / (flex_file['Salary']/1000), ceiling_var)
-                            flex_file_ceilings = flex_file
-                            flex_file = flex_file.loc[flex_file['Ceiling Value'] >= ceiling_var]
-
+                            
                             overall_players = flex_file[['Player']]
                             overall_players['player_var_add'] = flex_file.index
                             overall_players['player_var'] = 'player_vars_' + overall_players['player_var_add'].astype(str)
@@ -205,16 +185,7 @@ with tab2:
                                 for flex in flex_file['trim'].unique():
                                     sub_idx = flex_file[flex_file['trim'] == 1].index
                                     total_score += pulp.lpSum([player_vars[idx] for idx in sub_idx]) == 0
-                            
-                            if func_var > 0:
-                                for flex in flex_file['lev_group'].unique():
-                                    sub_idx = flex_file[flex_file['lev_group'] == 1].index
-                                    total_score += pulp.lpSum([player_vars[idx] for idx in sub_idx]) >= func_var
-
-                                for flex in flex_file['chalk_group'].unique():
-                                    sub_idx = flex_file[flex_file['chalk_group'] == 1].index
-                                    total_score += pulp.lpSum([player_vars[idx] for idx in sub_idx]) <= 6 - func_var
-                            
+                                    
                             for flex in flex_file['Pos'].unique():
                                 sub_idx = flex_file[flex_file['Pos'].str.contains("PG")].index
                                 total_score += pulp.lpSum([player_vars[idx] for idx in sub_idx]) >= 1
