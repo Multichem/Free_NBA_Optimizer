@@ -262,7 +262,8 @@ with tab2:
                             lineup_final['Proj'] = total_proj
                             lineup_final['Own'] = total_own
                             
-                            st.write(lineup_final)
+                            with display_container:
+                                st.write(lineup_final)
                             
                             lineups.append(lineup_final)
 
