@@ -270,7 +270,7 @@ with tab2:
                             
                             lineup_display.append(lineup_test)
                             
-                            with display_container:
+                            with st.container():
                                 for lineup_var in range(0,len(lineup_display)):
                                     st.table(lineup_display[int(lineup_var)])
                             
@@ -738,7 +738,5 @@ with tab2:
                         display_frame = display_frame.drop_duplicates(subset=['Proj'])
                         display_frame = display_frame.round(2)
 
-                with display_container:        
-                    st.dataframe(data=display_frame, use_container_width = True)
                 with hold_container:
                     hold_container = st.empty()
