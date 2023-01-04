@@ -42,10 +42,6 @@ with tab2:
         slack_var = st.number_input('Median randomness', min_value = 0, max_value = 5, value = 0, step = 1)
         totalRuns_raw = st.number_input('How many Lineups', min_value = 1, max_value = 1000, value = 5, step = 1)
 
-    trim_true = 0
-    own_trim_var = 50
-    trim_var = 5
-    trim_dudes = trim_var
     totalRuns = totalRuns_raw
     cut_group_1 = []
     cut_group_2 = []
@@ -72,27 +68,6 @@ with tab2:
                             max_own = 1000
                             total_proj = 0
                             total_own = 0
-
-                            if x > 1:
-                                if trim_var > 0:
-                                    for p_var in range(0,8):
-                                        try:
-                                            player_pool_raw.append(lineup_final[p_var][0])
-                                        except:
-                                            pass
-                                    [player_pool.append(x) for x in player_pool_raw if x not in player_pool]
-                                    for c_var in range(0,len(player_pool)):
-                                        player_count.append(player_pool_raw.count(player_pool[c_var]))
-                                    player_trim_pool = pd.DataFrame(player_pool, columns = ['Player'])
-                                    player_trim_pool['instances'] = player_count
-                                    player_trim_pool_check = player_trim_pool
-                                    player_trim_pool = player_trim_pool.nlargest(trim_var, ['instances'])
-
-                                    if len(player_trim_pool) > 0:
-                                        player_trim_raw = player_trim_pool.sample(n=trim_dudes)
-                                        player_trim_list = player_trim_raw['Player'].tolist()
-                                elif trim_var == 0:
-                                    player_trim_list = []
 
                             raw_proj_file = proj_data
                             raw_proj_file.rename(columns={"name": "Player", "salary": "Salary", "fpts": "Median", "proj_own": "Own"}, inplace = True)
@@ -177,11 +152,6 @@ with tab2:
                                 for flex in flex_file['cut_group_2'].unique():
                                     sub_idx = flex_file[flex_file['cut_group_2'] == 1].index
                                     total_score += pulp.lpSum([player_vars[idx] for idx in sub_idx]) <= 1
-
-                            if len(player_trim_pool) > 0:
-                                for flex in flex_file['trim'].unique():
-                                    sub_idx = flex_file[flex_file['trim'] == 1].index
-                                    total_score += pulp.lpSum([player_vars[idx] for idx in sub_idx]) == 0
                                     
                             for flex in flex_file['Pos'].unique():
                                 sub_idx = flex_file[flex_file['Pos'].str.contains("PG")].index
@@ -272,8 +242,6 @@ with tab2:
                             lineup_list = []
 
                             total_score += pulp.lpSum([player_vars[idx]*obj_points_max[idx] for idx in flex_file.index]) <= max_proj
-                            if trim_true == 1:
-                                total_score += pulp.lpSum([player_vars[idx]*obj_points_max[idx] for idx in flex_file.index]) <= (max_own + int(own_trim_var)) - .01
 
                             total_score.solve()
                             for v in total_score.variables():
@@ -298,9 +266,8 @@ with tab2:
                             lineup_final['Cost'] = total_cost
                             lineup_final['Proj'] = total_proj
                             lineup_final['Own'] = total_own
-
-                            if total_cost < 50001:
-                                lineups.append(lineup_final)
+                            
+                            lineups.append(lineup_final)
 
                             max_proj = total_proj
                             max_own = total_own
