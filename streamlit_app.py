@@ -39,6 +39,7 @@ with tab2:
         max_sal = st.number_input('Max Salary', min_value = 35000, max_value = 50000, value = 50000, step = 100)
         min_sal = st.number_input('Min Salary', min_value = 35000, max_value = 49900, value = 49000, step = 100)
         proj_cut = st.number_input('Lowest median allowed', min_value = 0, max_value = 25, value = 10, step = 1)
+        slack_var = st.number_input('Median randomness', min_value = 0, max_value = 5, value = 0, step = 1)
         totalRuns_raw = st.number_input('How many Lineups', min_value = 1, max_value = 1000, value = 5, step = 1)
 
     trim_true = 0
