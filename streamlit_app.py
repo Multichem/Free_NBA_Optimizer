@@ -272,7 +272,7 @@ with tab2:
                             
                             with display_container:
                                 for lineup_loop_var in lineup_display:
-                                    st.table(lineup_display[0])
+                                    st.table(lineup_display[int(lineup_loop_var)])
                             
                             lineups.append(lineup_final)
 
