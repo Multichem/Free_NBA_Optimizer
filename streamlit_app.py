@@ -24,7 +24,7 @@ with tab1:
     hold_container = st.empty()
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
-      proj_data = pd.read_json(Projection_URL)
+      proj_data = pd.read_csv(uploaded_file)
       st.write(proj_data)
 
 with tab2:   
