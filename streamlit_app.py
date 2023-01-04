@@ -127,10 +127,6 @@ with tab2:
                             flex_file['Median'] = flex_file['Median'] + flex_file['randNumCol']
                             flex_file_check = flex_file
                             check_list.append(flex_file['Median'][4])
-                            if len(avoid_players) > 0:
-                                flex_file = flex_file.loc[~flex_file['Player'].isin(avoid_players)]
-                            if len(avoid_teams) > 0:
-                                flex_file = flex_file.loc[~flex_file['Team'].isin(avoid_teams)]
                             player_ids = flex_file.index
                             
                             overall_players = flex_file[['Player']]
