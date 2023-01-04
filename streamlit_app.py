@@ -31,9 +31,6 @@ with tab1:
 with tab2:   
     col1, col2 = st.columns([1, 4])
     
-    with col2:
-        display_container = st.empty()
-    
     st.info('Note that this optimization process aims to create a large set of usable lineups, and not necessarily an exact amount.')
     with col1:
       
