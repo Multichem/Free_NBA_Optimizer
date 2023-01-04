@@ -15,7 +15,7 @@ st.set_page_config(layout="wide")
 
 tab1, tab2 = st.tabs(["Projections", "Optimizer"])
 
-lineup_display = {}
+lineup_display = []
 check_list = []
 rand_player = 0
 boost_player = 0
@@ -267,10 +267,12 @@ with tab2:
                             lineup_final['Cost'] = total_cost
                             lineup_final['Proj'] = total_proj
                             lineup_final['Own'] = total_own
+                            
                             lineup_display.append(lineup_test)
                             
                             with display_container:
-                                st.write(lineup_display)
+                                for lineup in lineup_display:
+                                    st.write(lineup_display[lineup])
                             
                             lineups.append(lineup_final)
 
