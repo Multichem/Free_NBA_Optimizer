@@ -268,6 +268,8 @@ with tab2:
                             lineup_test['Salary'] = lineup_test['Names'].map(player_sal)
                             lineup_test['Proj'] = lineup_test['Names'].map(player_proj)
                             lineup_test['Own'] = lineup_test['Names'].map(player_own)
+                            lineup_test.loc['Column_Total'] = lineup_test.sum(numeric_only=True, axis=0)
+                            lineup_test['Player'] = df['Player'].replace(np.nan, "Lineup Totals")
                             
                             lineup_display.append(lineup_test)
                             
