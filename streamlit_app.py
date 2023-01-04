@@ -59,15 +59,16 @@ with tab2:
     x = 1
 
     if st.button('Optimize'):
+        max_proj = 1000
+        max_own = 1000
+        total_proj = 0
+        total_own = 0
+        
         with col2:
             with st.spinner('Wait for it...'):
                 with hold_container.container():
 
                         while x <= totalRuns:
-                            max_proj = 1000
-                            max_own = 1000
-                            total_proj = 0
-                            total_own = 0
 
                             raw_proj_file = proj_data
                             raw_proj_file.rename(columns={"name": "Player", "salary": "Salary", "fpts": "Median", "proj_own": "Own"}, inplace = True)
@@ -263,7 +264,6 @@ with tab2:
                             lineup_final['Own'] = total_own
                             
                             with display_container:
-                                st.write(x)
                                 st.write(lineup_final)
                             
                             lineups.append(lineup_final)
