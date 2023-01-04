@@ -271,7 +271,7 @@ with tab2:
                             player_trim = []
                             lineup_list = []
 
-                            total_score += pulp.lpSum([player_vars[idx]*obj_points_max[idx] for idx in flex_file.index]) <= max_proj - .01
+                            total_score += pulp.lpSum([player_vars[idx]*obj_points_max[idx] for idx in flex_file.index]) <= max_proj
                             if trim_true == 1:
                                 total_score += pulp.lpSum([player_vars[idx]*obj_points_max[idx] for idx in flex_file.index]) <= (max_own + int(own_trim_var)) - .01
 
