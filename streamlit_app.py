@@ -259,9 +259,9 @@ with tab2:
                             del lineup_final[lineup_final.columns[1]]
                             lineup_final = lineup_final.reset_index(drop=True)
                             lineup_test = lineup_final
-                            lineup_test['Salary'] = lineup_test[0].map(player_sal)
-                            lineup_test['Proj'] = lineup_test[0].map(player_proj)
-                            lineup_test['Own'] = lineup_test[0].map(player_own)
+                            lineup_test['Salary'] = lineup_test['Names'].map(player_sal)
+                            lineup_test['Proj'] = lineup_test['Names'].map(player_proj)
+                            lineup_test['Own'] = lineup_test['Names'].map(player_own)
                             lineup_final = lineup_final.T
                             lineup_final['Cost'] = total_cost
                             lineup_final['Proj'] = total_proj
