@@ -263,6 +263,7 @@ with tab2:
                             lineup_final['Own'] = total_own
                             
                             with display_container:
+                                st.write(x)
                                 st.write(lineup_final)
                             
                             lineups.append(lineup_final)
