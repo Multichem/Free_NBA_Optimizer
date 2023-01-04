@@ -87,10 +87,7 @@ with tab2:
                             chalk_group_df = chalk_file.sample(n=10)
                             chalk_group = chalk_group_df['Player'].tolist()
                             flex_file['chalk_group'] = flex_file['Player'].isin(chalk_group)*1
-                            if x > 1:
-                                flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group', 'trim']]
-                            elif x == 0:
-                                flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group']]
+                            flex_file = flex_file[['Player', 'name_var', 'Team', 'Pos', 'Salary', 'Median', 'Proj DK Own%', 'lock', 'force_group_1', 'force_group_2', 'cut_group_1', 'cut_group_2', 'chalk_group']]
                             if x > 1:
                                 if slack_var > 0:
                                     flex_file['randNumCol'] = np.random.randint(-int(slack_var),int(slack_var), flex_file.shape[0])
