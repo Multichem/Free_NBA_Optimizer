@@ -141,7 +141,7 @@ with tab2:
                             player_own = dict(zip(flex_file['Player'], flex_file['Proj DK Own%']))
                             player_sal = dict(zip(flex_file['Player'], flex_file['Salary']))
                             player_proj = dict(zip(flex_file['Player'], flex_file['Median']))
-                            player_pos = dict(zip(flex_file['Player'], flex_file['Pos']))
+                            pos_dict = dict(zip(flex_file['Player'], flex_file['Pos']))
 
                             obj_points = {idx: (flex_file['Median'][idx]) for idx in flex_file.index}
                             total_score += sum([player_vars[idx]*obj_points[idx] for idx in flex_file.index])
@@ -317,14 +317,14 @@ with tab2:
                         final_outcomes = portfolio
                         final_outcomes.columns = ['Player', 'Player.1', 'Player.2', 'Player.3', 'Player.4', 'Player.5', 'Player.6', 'Player.7', 'Cost', 'Proj', 'Own']
 
-                        final_outcomes['pos.1'] = final_outcomes['Player'].map(player_pos)
-                        final_outcomes['pos.2'] = final_outcomes['Player.1'].map(player_pos)
-                        final_outcomes['pos.3'] = final_outcomes['Player.2'].map(player_pos)
-                        final_outcomes['pos.4'] = final_outcomes['Player.3'].map(player_pos)
-                        final_outcomes['pos.5'] = final_outcomes['Player.4'].map(player_pos)
-                        final_outcomes['pos.6'] = final_outcomes['Player.5'].map(player_pos)
-                        final_outcomes['pos.7'] = final_outcomes['Player.6'].map(player_pos)
-                        final_outcomes['pos.8'] = final_outcomes['Player.7'].map(player_pos)
+                        final_outcomes['pos.1'] = final_outcomes['Player'].map(pos_dict)
+                        final_outcomes['pos.2'] = final_outcomes['Player.1'].map(pos_dict)
+                        final_outcomes['pos.3'] = final_outcomes['Player.2'].map(pos_dict)
+                        final_outcomes['pos.4'] = final_outcomes['Player.3'].map(pos_dict)
+                        final_outcomes['pos.5'] = final_outcomes['Player.4'].map(pos_dict)
+                        final_outcomes['pos.6'] = final_outcomes['Player.5'].map(pos_dict)
+                        final_outcomes['pos.7'] = final_outcomes['Player.6'].map(pos_dict)
+                        final_outcomes['pos.8'] = final_outcomes['Player.7'].map(pos_dict)
 
                         final_positions = final_outcomes[['pos.1','pos.2','pos.3','pos.4','pos.5','pos.6','pos.7','pos.8']]
 
@@ -733,30 +733,30 @@ with tab2:
                         final_outcomes = final_outcomes.loc[final_outcomes['two_c'] <= 2]
                         final_sorted_outcomes = final_outcomes[['PG', 'SG', 'SF', 'PF', 'C', 'G', 'F', 'UTIL']]
                         final_sorted_outcomes.rename(columns={"PG": "Player", "SG": "Player.1", "SF": "Player.2", "PF": "Player.3", "C": "Player.4", "G": "Player.5", "F": "Player.6", "UTIL": "Player.7"}, inplace = True)
-                        final_sorted_outcomes['Salary'] = sum([final_sorted_outcomes['Player'].map(salary_dict),
-                                final_sorted_outcomes['Player.1'].map(salary_dict),
-                                final_sorted_outcomes['Player.2'].map(salary_dict),
-                                final_sorted_outcomes['Player.3'].map(salary_dict),
-                                final_sorted_outcomes['Player.4'].map(salary_dict),
-                                final_sorted_outcomes['Player.5'].map(salary_dict),
-                                final_sorted_outcomes['Player.6'].map(salary_dict),
-                                final_sorted_outcomes['Player.7'].map(salary_dict)])
-                        final_sorted_outcomes['Proj'] = sum([final_sorted_outcomes['Player'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.1'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.2'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.3'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.4'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.5'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.6'].map(player_proj_dict),
-                                final_sorted_outcomes['Player.7'].map(player_proj_dict)])
-                        final_sorted_outcomes['Proj Own%'] = sum([final_sorted_outcomes['Player'].map(player_own_dict),
-                                final_sorted_outcomes['Player.1'].map(player_own_dict),
-                                final_sorted_outcomes['Player.2'].map(player_own_dict),
-                                final_sorted_outcomes['Player.3'].map(player_own_dict),
-                                final_sorted_outcomes['Player.4'].map(player_own_dict),
-                                final_sorted_outcomes['Player.5'].map(player_own_dict),
-                                final_sorted_outcomes['Player.6'].map(player_own_dict),
-                                final_sorted_outcomes['Player.7'].map(player_own_dict)])
+                        final_sorted_outcomes['Salary'] = sum([final_sorted_outcomes['Player'].map(player_sal),
+                                final_sorted_outcomes['Player.1'].map(player_sal),
+                                final_sorted_outcomes['Player.2'].map(player_sal),
+                                final_sorted_outcomes['Player.3'].map(player_sal),
+                                final_sorted_outcomes['Player.4'].map(player_sal),
+                                final_sorted_outcomes['Player.5'].map(player_sal),
+                                final_sorted_outcomes['Player.6'].map(player_sal),
+                                final_sorted_outcomes['Player.7'].map(player_sal)])
+                        final_sorted_outcomes['Proj'] = sum([final_sorted_outcomes['Player'].map(player_proj),
+                                final_sorted_outcomes['Player.1'].map(player_proj),
+                                final_sorted_outcomes['Player.2'].map(player_proj),
+                                final_sorted_outcomes['Player.3'].map(player_proj),
+                                final_sorted_outcomes['Player.4'].map(player_proj),
+                                final_sorted_outcomes['Player.5'].map(player_proj),
+                                final_sorted_outcomes['Player.6'].map(player_proj),
+                                final_sorted_outcomes['Player.7'].map(player_proj)])
+                        final_sorted_outcomes['Proj Own%'] = sum([final_sorted_outcomes['Player'].map(player_own),
+                                final_sorted_outcomes['Player.1'].map(player_own),
+                                final_sorted_outcomes['Player.2'].map(player_own),
+                                final_sorted_outcomes['Player.3'].map(player_own),
+                                final_sorted_outcomes['Player.4'].map(player_own),
+                                final_sorted_outcomes['Player.5'].map(player_own),
+                                final_sorted_outcomes['Player.6'].map(player_own),
+                                final_sorted_outcomes['Player.7'].map(player_own)])
                         sort_df = final_sorted_outcomes.sort_values(by='Proj', ascending=False)
                         sort_df = sort_df.reset_index()
                         sort_df = sort_df.drop(['index'], axis=1)
