@@ -267,8 +267,9 @@ with tab2:
                             
                             lineup_display.append(lineup_test)
                             
-                            with st.container():
-                                st.table(lineup_test)
+                            with col2:
+                                with st.container():
+                                    st.table(lineup_test)
                             
                             lineups.append(lineup_final)
 
