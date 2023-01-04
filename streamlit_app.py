@@ -79,8 +79,6 @@ with tab2:
                             flex_file.rename(columns={"team": "Team", "pos": "Pos", "Own": "Proj DK Own%"}, inplace = True)
                             flex_file['name_var'] = flex_file['Player']
                             flex_file['lock'] = flex_file['Player'].isin(lock_player)*1
-                            if x > 1:
-                                flex_file['trim'] = flex_file['Player'].isin(player_trim_list)*1
                             flex_file['force_group_1'] = flex_file['Player'].isin(force_group_1)*1
                             flex_file['force_group_2'] = flex_file['Player'].isin(force_group_2)*1
                             flex_file['cut_group_1'] = flex_file['Player'].isin(cut_group_1)*1
