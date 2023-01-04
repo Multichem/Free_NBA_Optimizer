@@ -269,7 +269,6 @@ with tab2:
                             lineup_test['Proj'] = lineup_test['Names'].map(player_proj)
                             lineup_test['Own'] = lineup_test['Names'].map(player_own)
                             lineup_test.loc['Column_Total'] = lineup_test.sum(numeric_only=True, axis=0)
-                            lineup_test.style.apply(color='red', axis=0)
                             
                             lineup_display.append(lineup_test)
                             
