@@ -317,14 +317,14 @@ with tab2:
                         final_outcomes = portfolio
                         final_outcomes.columns = ['Player', 'Player.1', 'Player.2', 'Player.3', 'Player.4', 'Player.5', 'Player.6', 'Player.7', 'Cost', 'Proj', 'Own']
 
-                        final_outcomes['pos.1'] = final_outcomes['Player'].map(pos_dict)
-                        final_outcomes['pos.2'] = final_outcomes['Player.1'].map(pos_dict)
-                        final_outcomes['pos.3'] = final_outcomes['Player.2'].map(pos_dict)
-                        final_outcomes['pos.4'] = final_outcomes['Player.3'].map(pos_dict)
-                        final_outcomes['pos.5'] = final_outcomes['Player.4'].map(pos_dict)
-                        final_outcomes['pos.6'] = final_outcomes['Player.5'].map(pos_dict)
-                        final_outcomes['pos.7'] = final_outcomes['Player.6'].map(pos_dict)
-                        final_outcomes['pos.8'] = final_outcomes['Player.7'].map(pos_dict)
+                        final_outcomes['pos.1'] = final_outcomes['Player'].map(player_pos)
+                        final_outcomes['pos.2'] = final_outcomes['Player.1'].map(player_pos)
+                        final_outcomes['pos.3'] = final_outcomes['Player.2'].map(player_pos)
+                        final_outcomes['pos.4'] = final_outcomes['Player.3'].map(player_pos)
+                        final_outcomes['pos.5'] = final_outcomes['Player.4'].map(player_pos)
+                        final_outcomes['pos.6'] = final_outcomes['Player.5'].map(player_pos)
+                        final_outcomes['pos.7'] = final_outcomes['Player.6'].map(player_pos)
+                        final_outcomes['pos.8'] = final_outcomes['Player.7'].map(player_pos)
 
                         final_positions = final_outcomes[['pos.1','pos.2','pos.3','pos.4','pos.5','pos.6','pos.7','pos.8']]
 
