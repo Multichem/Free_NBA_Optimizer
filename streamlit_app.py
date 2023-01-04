@@ -69,13 +69,13 @@ with tab2:
                         while x <= totalRuns:
 
                             raw_proj_file = proj_data
-                            raw_proj_file.rename(columns={"name": "Player", "salary": "Salary", "fpts": "Median", "proj_own": "Own"}, inplace = True)
+                            raw_proj_file = raw_proj_file.columns = ['Player', 'Team', 'Position', 'Salary', 'Median', 'Own']
                             raw_flex_file = raw_proj_file.dropna(how='all')
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > 0]
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > proj_cut]
                             flex_file = raw_flex_file
-                            flex_file = flex_file[['Player', 'team', 'pos', 'Salary', 'Median', 'Own']]
-                            flex_file.rename(columns={"team": "Team", "pos": "Pos", "Own": "Proj DK Own%"}, inplace = True)
+                            flex_file = flex_file[['Player', 'Team', 'Position', 'Salary', 'Median', 'Own']]
+                            flex_file.rename(columns={"Position": "Pos", "Own": "Proj DK Own%"}, inplace = True)
                             flex_file['name_var'] = flex_file['Player']
                             flex_file['lock'] = flex_file['Player'].isin(lock_player)*1
                             flex_file['force_group_1'] = flex_file['Player'].isin(force_group_1)*1
