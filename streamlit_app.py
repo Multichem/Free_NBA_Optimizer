@@ -270,7 +270,7 @@ with tab2:
                             
                             lineup_display.append(lineup_test)
                             
-                            lineup_test
+                            st.table(lineup_test)
                             
                             lineups.append(lineup_final)
 
