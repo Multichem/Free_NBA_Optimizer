@@ -110,7 +110,6 @@ with tab2:
                                 flex_file['randNumCol'] = 0
                             flex_file['Median'] = flex_file['Median'] + flex_file['randNumCol']
                             flex_file_check = flex_file
-                            check_list.append(flex_file['Median'][4])
                             player_ids = flex_file.index
                             
                             overall_players = flex_file[['Player']]
