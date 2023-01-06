@@ -21,14 +21,28 @@ rand_player = 0
 boost_player = 0
 salaryCut = 0
 
+CSV_URL = 'https://sheetdb.io/api/v1/5e6ksfq0q1ghr?sheet=DK_CSV'
+
+@st.cache
+def convert_df_to_csv(df):
+  # IMPORTANT: Cache the conversion to prevent computation on every rerun
+  return df.to_csv().encode('utf-8')
+
+@st.experimental_memo
+def grab_csv_data(URL):
+    draftkings_data = pd.read_json(URL)
+    draftkings_data.rename(columns={"Name": "Player"}, inplace = True)
+    
+    return draftkings_data
+
 with tab1:
     hold_container = st.empty()
-    st.info('This is a free to use NBA optimizer while I play around with this app platform. Eventually it will have export functionality, but for now it is used to create lineups without an export. In order to use it, upload a csv with that the columns oriented in this order: Player, Team, Position, Salary, Projection, Ownership. The columns names do not matter, but the orientation does!')
+    st.info('This is a free to use NBA optimizer while I play around with this app platform. In order to use it, upload a csv with that the columns oriented in this order: Player, Team, Position, Salary, Projection, Ownership. The columns names do not matter, but the orientation does!')
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
       proj_data = pd.read_csv(uploaded_file)
       st.write(proj_data)
-
+        
 with tab2:   
     col1, col2 = st.columns([1, 4])
     
@@ -102,7 +116,11 @@ with tab2:
                             overall_players = flex_file[['Player']]
                             overall_players['player_var_add'] = flex_file.index
                             overall_players['player_var'] = 'player_vars_' + overall_players['player_var_add'].astype(str)
-
+                            
+                            csv_data = grab_csv_data(CSV_URL)
+                            csv_merge = pd.merge(csv_data, flex_file, how='left', left_on=['Player'], right_on = ['Player'])
+                            id_dict = dict(zip(csv_merge['Player'], csv_merge['Name + ID']))
+                            
                             player_vars = pulp.LpVariable.dicts("player_vars", flex_file.index, 0, 1, pulp.LpInteger)
                             total_score = pulp.LpProblem("Fantasy_Points_Problem", pulp.LpMaximize)
                             player_match = dict(zip(overall_players['player_var'], overall_players['Player']))
@@ -737,6 +755,26 @@ with tab2:
                         display_frame = sort_df.apply(pd.to_numeric, errors='ignore')
                         display_frame = display_frame.drop_duplicates(subset=['Proj'])
                         display_frame = display_frame.round(2)
+                
+                        final_outcomes = display_frame
+                        final_outcomes.rename(columns={'Player': 'Player_1', 'Player.1': 'Player_2', 'Player.2': 'Player_3', 'Player.3': 'Player_4', 'Player.4': 'Player_5', 'Player.5': 'Player_6', 'Player.6': 'Player_7', 'Player.7': 'Player_8'}, inplace = True)
+                        final_outcomes['p1 id'] = final_outcomes['Player_1'].map(id_dict)
+                        final_outcomes['p2 id'] = final_outcomes['Player_2'].map(id_dict)
+                        final_outcomes['p3 id'] = final_outcomes['Player_3'].map(id_dict)
+                        final_outcomes['p4 id'] = final_outcomes['Player_4'].map(id_dict)
+                        final_outcomes['p5 id'] = final_outcomes['Player_5'].map(id_dict)
+                        final_outcomes['p6 id'] = final_outcomes['Player_6'].map(id_dict)
+                        final_outcomes['p7 id'] = final_outcomes['Player_7'].map(id_dict)
+                        final_outcomes['p8 id'] = final_outcomes['Player_8'].map(id_dict)
+                        final_outcomes = final_outcomes[['p1 id', 'p2 id', 'p3 id', 'p4 id', 'p5 id', 'p6 id', 'p7 id', 'p8 id']]
+                        
+                with col1:
+                    st.download_button(
+                        label="Export Lineups",
+                        data=convert_df_to_csv(final_outcomes),
+                        file_name='NBA_DFS_export.csv',
+                        mime='text/csv',
+                    )
 
                 with hold_container:
                     hold_container = st.empty()
