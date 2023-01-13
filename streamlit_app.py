@@ -41,6 +41,7 @@ with tab1:
     uploaded_file = st.file_uploader("Choose a file")
     if uploaded_file is not None:
       proj_data = pd.read_csv(uploaded_file)
+      proj_data = proj_data.replace(',','', regex=True)
       st.write(proj_data)
         
 with tab2:   
