@@ -87,6 +87,7 @@ with tab2:
                             raw_proj_file.columns = ['Player', 'Team', 'Position', 'Salary', 'Median', 'Own']
                             raw_proj_file = raw_proj_file.replace(',','', regex=True)
                             raw_flex_file = raw_proj_file.dropna(how='all')
+                            raw_flex_file['Salary'] = raw_flex_file['Salary'].astype(float)
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > 0]
                             raw_flex_file = raw_flex_file.loc[raw_flex_file['Median'] > proj_cut]
                             flex_file = raw_flex_file
